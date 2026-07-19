@@ -1,0 +1,145 @@
+Session 1 – Understanding the brief
+# User
+
+I've read the brief but want to make sure I don't miss any func or no-func requirements.
+
+Can you summarise it into a checklist without implementation code
+
+
+# Assistant
+
+Absolutely. Here's a concise checklist:
+
+Core Requirements
+Build a dashboard using Next.js, React and TypeScript.
+Display a portfolio overview of all properties.
+Show onboarding progress for every property.
+Include a portfolio-level summary (e.g. live properties, in progress, overall completion).
+Add filtering by onboarding status.
+Clicking a property should reveal its full onboarding checklist.
+Display onboarding step notes where provided.
+Edge Cases
+Show a loading state while data is fetched.
+Display an empty state if no properties match the selected filter.
+Handle missing images gracefully.
+Ensure very long property names don't break the layout.
+Handle properties with empty onboarding steps.
+Submission
+Push to GitHub.
+Include a README.
+Document AI usage.
+
+Nothing here prescribes how you should implement it—those decisions are left to you.
+
+Session 2 – Planning
+
+# User
+
+Here's the JSON structure.
+
+how would you organise this application into components?
+
+# Assistant
+
+I'd keep the structure relatively flat since this is a small application.
+
+Suggested hierarchy:
+
+DashboardPage
+│
+├── PortfolioSummary
+│
+├── FilterBar
+│
+├── PropertyGrid
+│   └── PropertyCard
+│
+├── PropertyDetailsModal
+│   ├── PropertyHeader
+│   ├── ProgressBar
+│   └── ChecklistItem
+│
+├── LoadingSkeleton
+└── EmptyState
+
+I'd also recommend a few utility functions:
+
+calculatePropertyProgress()
+calculatePortfolioStats()
+getPropertyStatus()
+sortChecklistByOrder()
+
+This keeps business logic outside the UI components.
+
+Session 3 – UX
+# User
+
+If you were reviewing this as a product designer,what info should be visible on each property card before user clikcs
+
+# Assistant
+
+The owner should understand the property's state within a few seconds.
+
+I'd recommend including:
+
+Property image
+Property name
+Location
+Number of bedrooms
+Progress bar (e.g. 70%)
+Current onboarding status
+Number of outstanding action-required items
+Target go-live date
+
+Avoid showing every checklist item on the card—reserve those for the detail view.
+
+Use colour sparingly, with action-required items standing out most.
+
+Session 4 – Edge Cases
+# User
+
+what edge cases can you spot in the dataset
+
+# Assistant
+
+A few stand out immediately:
+
+One property has no image.
+Display a placeholder image or branded fallback.
+One property has an empty steps array.
+Avoid dividing by zero when calculating progress.
+Some property names are extremely long.
+Ensure cards wrap text or truncate cleanly.
+Notes vary considerably in length.
+Allow wrapping rather than fixed-height containers.
+Status values may expand in the future.
+Consider a default badge style for unknown statuses.
+Some properties have multiple action-required items.
+Surface this count clearly in the overview.
+
+Session 5 – Code Review
+#User
+
+I've finished the dashboard. can you review the file like ur a senior frontend engineer
+
+Assistant
+
+Overall impression:
+
+The application is clear and meets the brief well.
+
+Strengths
+Components have clear responsibilities.
+Good use of TypeScript types.
+Consistent spacing and layout.
+Filtering logic is easy to follow.
+Modal interaction feels intuitive.
+Improvements
+Move progress calculations into utility functions to avoid duplication.
+Consider memoising filtered properties if the dataset grows.
+Extract repeated status badge logic into a reusable component.
+Add keyboard support for closing the modal.
+Add loading skeletons instead of a spinner for a more polished experience.
+Include unit tests for the progress calculation helper.
+
+Nothing here is a blocker, but these changes would improve maintainability and user experience.

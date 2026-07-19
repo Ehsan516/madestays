@@ -7,9 +7,6 @@ import {
 } from "./types";
 
 // lines up a property's steps with the master list of 10 steps, in order.
-// if a property is missing one (Kingsgate has none at all) we just treat
-// it as not_started instead of leaving it out - keeps every checklist the
-// same length which makes the UI way simpler
 export function resolveSteps(
   property: Property,
   definitions: OnboardingStepDefinition[]
@@ -47,9 +44,7 @@ export function computeProgress(
   }
 
   // property counts as overdue if the target date has already passed and
-  // its not live yet. not using a library for the date compare, just
-  // zeroing out the time so "today" doesnt accidentally count as overdue
-  // (TODO: this is using the browser's local time, probably fine for now)
+  // its not live yet
   const targetDate = new Date(property.targetGoLiveDate);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -101,4 +96,29 @@ export function computePortfolioStats(all: PropertyProgress[]): PortfolioStats {
     notStartedCount,
     overallPercentComplete,
   };
+}
+
+export interface AttentionItem {
+  propertyId: string;
+  propertyName: string;
+  stepLabel: string;
+  note?: string;
+}
+
+// flattens every action_required step across the whole portfolio into one
+// list. point of this is so the owner can see everything that needs them
+// in one spot
+export function computeAttentionItems(
+  all: PropertyProgress[],
+  definitions: OnboardingStepDefinition[]
+): AttentionItem[] {
+  const labelById = new Map(definitions.map((d) => [d.id, d.label]));
+  return all.flatMap((p) =>
+    p.actionRequiredSteps.map((step) => ({
+      propertyId: p.property.id,
+      propertyName: p.property.name,
+      stepLabel: labelById.get(step.id) ?? step.id,
+      note: step.note,
+    }))
+  );
 }

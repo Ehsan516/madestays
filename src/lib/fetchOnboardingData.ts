@@ -8,6 +8,6 @@ const DATA = rawData as OnboardingData;
  */
 export function fetchOnboardingData(): Promise<OnboardingData> {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(DATA), 700);
+    setTimeout(() => resolve(DATA), 400);
   });
 }

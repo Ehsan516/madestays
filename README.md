@@ -24,6 +24,10 @@ build. Node 18+ required.
   ten-step checklist, each step's status, and the note explaining what's
   needed where one exists. Closes on Escape, backdrop click, or the close
   button.
+- **Attention digest**: every `action_required` item across the portfolio in
+  one list under the summary, click one to jump straight to that property.
+- **Overdue flag**: a small marker on a property whose target go-live date
+  has passed and isn't live yet.
 
 ## Design intent
 
@@ -79,8 +83,7 @@ there).
 - Act-on-it affordances: each `action_required` note becomes a task with an
   upload/confirm action, and a single "what needs your attention" digest at the
   top aggregating open items across properties.
-- Sort options (by go-live date, by progress) and urgency signals — Eaton
-  Square's target go-live is already in the past, which deserves a visible flag.
+- Sort options (by go-live date, by progress).
 - Route-based detail views (`/property/[id]`) so panels are linkable, with the
   modal kept as an interception route.
 - Component tests (Vitest + Testing Library) for the progress/stage derivation
@@ -88,3 +91,20 @@ there).
 - A skeleton→content crossfade and staggered card entrance, kept subtle and
   behind `prefers-reduced-motion`.
 
+## AI tools used
+
+Used **ChatGPT 5.5** :
+Summarised the take-home brief into a checklist to ensure all functional and non-functional requirements were covered before development.
+Suggested a high-level React component structure to help plan the application architecture.
+Provided UX feedback on what information should be prioritised on each property card from an owner's perspective.
+Identified potential edge cases in the supplied dataset (e.g. missing images, empty step arrays, long property names) to improve robustness.
+Performed a code review after implementation, highlighting maintainability, accessibility and performance improvements.
+Grammar Correction and formatting on README.md
+
+What AI was not used for:
+
+Generating the application's source code.
+Designing the final UI.
+Writing the React components or business logic.
+Making implementation decisions. Session transcripts and
+links are in `ai-sessions/`. No other AI tools were used.

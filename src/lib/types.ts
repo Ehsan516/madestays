@@ -53,6 +53,7 @@ export interface PropertyProgress {
   actionRequiredSteps: PropertyStep[];
   percentComplete: number; // 0-100, rounded
   stage: "live" | "needs_attention" | "in_progress" | "not_started";
+  isOverdue: boolean; // went past targetGoLiveDate and still not live
 }
 
 export type FilterKey = "all" | "needs_attention" | "in_progress" | "live" | "not_started";
