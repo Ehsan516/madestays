@@ -6,9 +6,10 @@ import {
   PropertyStep,
 } from "./types";
 
-/**
- * Merge a propertys recorded steps against the  step definitions, in order.
- */
+// lines up a property's steps with the master list of 10 steps, in order.
+// if a property is missing one (Kingsgate has none at all) we just treat
+// it as not_started instead of leaving it out - keeps every checklist the
+// same length which makes the UI way simpler
 export function resolveSteps(
   property: Property,
   definitions: OnboardingStepDefinition[]
@@ -45,6 +46,15 @@ export function computeProgress(
     stage = "not_started";
   }
 
+  // property counts as overdue if the target date has already passed and
+  // its not live yet. not using a library for the date compare, just
+  // zeroing out the time so "today" doesnt accidentally count as overdue
+  // (TODO: this is using the browser's local time, probably fine for now)
+  const targetDate = new Date(property.targetGoLiveDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isOverdue = stage !== "live" && !Number.isNaN(targetDate.getTime()) && targetDate < today;
+
   return {
     property,
     totalSteps,
@@ -52,6 +62,7 @@ export function computeProgress(
     actionRequiredSteps,
     percentComplete: totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100),
     stage,
+    isOverdue,
   };
 }
 
